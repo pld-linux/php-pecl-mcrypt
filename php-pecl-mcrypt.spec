@@ -7,16 +7,15 @@
 Summary:	mcrypt extension module for PHP
 Summary(pl.UTF-8):	Moduł mcrypt dla PHP
 Name:		%{php_name}-pecl-%{modname}
-# version taken from package.xml, .c source has NO_VERSION_YET macro
-Version:	0.0.0
-Release:	0.1
+Version:	1.0.1
+Release:	1
 License:	PHP 3.01
 Group:		Development/Languages/PHP
-Source0:	http://git.php.net/?p=pecl/.../mcrypt.git;a=snapshot;h=...;sf=tgz;/php-pecl-%{modname}-%{version}.tar.gz
-# Source0-md5:	-
+Source0:	http://pecl.php.net/get/%{modname}-%{version}.tgz
+# Source0-md5:	ff816f83dfb693864bac21ba2579ddfd
 URL:		http://php.net/manual/en/book.mcrypt.php
 %{?with_tests:BuildRequires:    %{php_name}-cli}
-BuildRequires:	%{php_name}-devel >= 4:7.1.0
+BuildRequires:	%{php_name}-devel >= 4:7.2.0
 BuildRequires:	libmcrypt-devel >= 2.5.6
 BuildRequires:	rpmbuild(macros) >= 1.666
 %if %{with tests}
@@ -24,8 +23,8 @@ BuildRequires:	%{php_name}-cli
 BuildRequires:	%{php_name}-pcre
 %endif
 %{?requires_php_extension}
-Provides:	php(%{modname}) = %{version}
 Requires:	libmcrypt >= 2.5.6
+Provides:	php(%{modname}) = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -48,7 +47,6 @@ phpize
 # simple module load test
 %{__php} -n -q \
 	-d extension_dir=modules \
-	-d extension=%{php_extensiondir}/spl.so \
 	-d extension=%{modname}.so \
 	-m > modules.log
 grep %{modname} modules.log
@@ -56,7 +54,7 @@ grep %{modname} modules.log
 export NO_INTERACTION=1 REPORT_EXIT_STATUS=1 MALLOC_CHECK_=2
 %{__make} test \
 	PHP_EXECUTABLE=%{__php} \
-	PHP_TEST_SHARED_SYSTEM_EXTENSIONS="spl" \
+	PHP_TEST_SHARED_SYSTEM_EXTENSIONS=""
 %endif
 
 %install
@@ -71,9 +69,6 @@ cat <<'EOF' > $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d/%{modname}.ini
 extension=%{modname}.so
 EOF
 
-install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -87,7 +82,6 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS TODO
+%doc LICENSE
 %config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/%{modname}.ini
 %attr(755,root,root) %{php_extensiondir}/%{modname}.so
-%{_examplesdir}/%{name}-%{version}
