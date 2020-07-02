@@ -7,13 +7,13 @@
 Summary:	mcrypt extension module for PHP
 Summary(pl.UTF-8):	Moduł mcrypt dla PHP
 Name:		%{php_name}-pecl-%{modname}
-Version:	1.0.1
+Version:	1.0.3
 Release:	1
 License:	PHP 3.01
 Group:		Development/Languages/PHP
-Source0:	http://pecl.php.net/get/%{modname}-%{version}.tgz
-# Source0-md5:	ff816f83dfb693864bac21ba2579ddfd
-URL:		http://php.net/manual/en/book.mcrypt.php
+Source0:	https://pecl.php.net/get/%{modname}-%{version}.tgz
+# Source0-md5:	0ef94382a4d214b1ed10af8a047a68c7
+URL:		https://php.net/manual/en/book.mcrypt.php
 %{?with_tests:BuildRequires:    %{php_name}-cli}
 BuildRequires:	%{php_name}-devel >= 4:7.2.0
 BuildRequires:	libmcrypt-devel >= 2.5.6
@@ -30,6 +30,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 This is a dynamic shared object (DSO) for PHP that will add mcrypt
 support.
+
+Warning:
+- This extension is DEPRECATED since PHP 7.1.0
+
+Alternatives to this extension include:
+- Sodium (available as of PHP 7.2.0)
+- OpenSSL
 
 %description -l pl.UTF-8
 Moduł PHP dodający możliwość szyfrowania poprzez bibliotekę mcrypt.
